@@ -51,6 +51,25 @@ class _CalBillUIState extends State<CalBillUI> {
   ];
 //สร้างตัวแปรกับส่วนลดที่เลือกจากประเภทสมาชิก
   double discount = 0;
+  double showDiscount = 0;
+
+  showWarningDialog(context, message) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('คำเตือน'),
+        content: Text(message),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('ตกลก'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -269,7 +288,7 @@ class _CalBillUIState extends State<CalBillUI> {
                 ),
                 //dropdown ประเภทสมาชิก
                 DropdownButton(
-                  value: discount,
+                  value: showDiscount,
                   isExpanded: true,
                   items: memberType
                       .map(
@@ -283,8 +302,10 @@ class _CalBillUIState extends State<CalBillUI> {
                       )
                       .toList(),
                   onChanged: (valueParam) {
+                    int index = valueParam!.toInt();
                     setState(() {
-                      switch (valueParam) {
+                      showDiscount = valueParam;
+                      switch (index) {
                         case 0:
                           discount = 0;
                           break;
@@ -295,7 +316,7 @@ class _CalBillUIState extends State<CalBillUI> {
                           discount = 0.2;
                           break;
                       }
-                      discount = valueParam!;
+                      discount = valueParam;
                     });
                   },
                 ),
@@ -307,12 +328,16 @@ class _CalBillUIState extends State<CalBillUI> {
                       child: ElevatedButton.icon(
                         onPressed: () {
                           if (imgFile == null) {
+                            showWarningDialog(context, 'ไม่มีรูป');
                           } else if (adultCheck == true &&
                                   adultCtrl.text == '0' ||
                               adultCtrl.text.isEmpty) {
+                            showWarningDialog(context, 'ป้อนจำนวนผู้ใหญ่ด้วย');
                           } else if (childCheck == true &&
                                   childCtrl.text == '0' ||
-                              childCtrl.text.isEmpty) {}
+                              childCtrl.text.isEmpty) {
+                            showWarningDialog(context, 'ป้อนจำนวนเด็กด้วย');
+                          }
                           int adult = int.parse(adultCtrl.text);
                           int child = int.parse(childCtrl.text);
                           int coke = int.parse(cokeCtrl.text);
@@ -329,10 +354,11 @@ class _CalBillUIState extends State<CalBillUI> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ShowBillUI(
-                                      payTotal: payTotal,
-                                      imgFile: imgFile,
-                                    )),
+                              builder: (context) => ShowBillUI(
+                                payTotal: payTotal,
+                                imgFile: imgFile,
+                              ),
+                            ),
                           );
                         },
                         icon: Icon(
@@ -355,7 +381,16 @@ class _CalBillUIState extends State<CalBillUI> {
                     Expanded(
                       flex: 1,
                       child: ElevatedButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            adultCtrl.text = '0';
+                            childCtrl.text = '0';
+                            cokeCtrl.text = '0';
+                            waterCtrl.text = '0';
+                            showDiscount = 0;
+                            discount = 0;
+                          });
+                        },
                         icon: Icon(
                           Icons.cancel,
                         ),
