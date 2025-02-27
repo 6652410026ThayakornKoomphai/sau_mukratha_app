@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:sau_mukratha_app/views/home_ui.dart';
-import 'package:sau_mukratha_app/views/menu_ui.dart';
 
 class SplashScreenUI extends StatefulWidget {
   const SplashScreenUI({super.key});

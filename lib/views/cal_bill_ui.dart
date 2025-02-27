@@ -306,41 +306,34 @@ class _CalBillUIState extends State<CalBillUI> {
                       flex: 1,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          //validate ui
                           if (imgFile == null) {
-                            //แจ้งเตือน
                           } else if (adultCheck == true &&
                                   adultCtrl.text == '0' ||
                               adultCtrl.text.isEmpty) {
-                            //แจ้งเตือน
                           } else if (childCheck == true &&
                                   childCtrl.text == '0' ||
-                              childCtrl.text.isEmpty) {
-                            //แจ้งเตือน
-                          } else {
-                            //พร้อมคำนวณ
-                            int adult = int.parse(adultCtrl.text);
-                            int child = int.parse(childCtrl.text);
-                            int coke = int.parse(cokeCtrl.text);
-                            int water = int.parse(waterCtrl.text);
-                            double payWaterBuffet =
-                                waterCheck == 1 ? 25.0 * (adult + child) : 0;
-                            double payTotal = (299.0 * adult) +
-                                (69.0 * child) +
-                                (20.0 * coke) +
-                                (15 * water) +
-                                payWaterBuffet;
-                            //คิดที่ต้องจ่ายหลังจากส่วนลด
-                            payTotal = payTotal - payTotal * discount;
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ShowBillUI(
-                                        payTotal: payTotal,
-                                        imgFile: imgFile,
-                                      )),
-                            );
-                          }
+                              childCtrl.text.isEmpty) {}
+                          int adult = int.parse(adultCtrl.text);
+                          int child = int.parse(childCtrl.text);
+                          int coke = int.parse(cokeCtrl.text);
+                          int waterr = int.parse(waterCtrl.text);
+                          double payWaterBuffet =
+                              waterCheck == 1 ? 25.0 * (adult + child) : 0;
+                          double payTotal = (299.0 * adult) +
+                              (69.0 * child) +
+                              (20.0 * coke) +
+                              (15.0 * waterr) +
+                              payWaterBuffet;
+                          payTotal = payTotal - (payTotal * discount);
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ShowBillUI(
+                                      payTotal: payTotal,
+                                      imgFile: imgFile,
+                                    )),
+                          );
                         },
                         icon: Icon(
                           Icons.calculate,

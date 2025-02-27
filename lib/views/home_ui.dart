@@ -14,7 +14,8 @@ class HomeUI extends StatefulWidget {
 
 class _HomeUIState extends State<HomeUI> {
   //ตัวควบคุม AnimatedNotchBottomBar
-  NotchBottomBarController _pageController = NotchBottomBarController(index: 1);
+  final NotchBottomBarController _pageController =
+      NotchBottomBarController(index: 1);
 
   //สร้างตัวแปรเก็บหน้าจอที่จะแสดงที่ body ซึงล้อกับ AnimatedNotchBottomBar
 
